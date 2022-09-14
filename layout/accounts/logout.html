@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block title %}
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .col-6{
+        padding-top: 5.5em;
+    }
+    
+    .toast{
+        opacity: 3;
+        z-index: 1000;
+    }
+    
+    .alter-w{
+        height: 85vh;
+        width: 98vw;
+        display: flex;
+        justify-content: flex-end;
+        align-items: flex-end;
+    }
+    .container{
+        margin: 0;
+    }
+    .vi{
+        color: #FFF9F9;
+        background-color: #BAABDA;
+    }
+    .vi:hover{
+        color: #FFF9F9;
+    }
+</style>
+
+<script>
+    $(".toast").toast({ autohide: false });
+    var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+    var toastList = toastElList.map(function (toastEl) {
+    return new bootstrap.Toast(toastEl, option)
+    })
+</script>
+
+<div class="row">
+    <div class="col-6">
+    </div>
+    <div class="col"></div>
+</div>
+
+<div aria-live="polite" aria-atomic="true" class="alter-w">
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-body">
+        로그아웃에 성공하였습니다.
+        <div class="mt-2 pt-2 border-top">
+          <button type="button" class="btn btn-sm vi" onclick="location.href='{% url 'accounts:login' %}'">로그인 하기</button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='{% url 'photo:index'%}'">메인</button>
+        </div>
+      </div>
+    </div>
+</div>
+{% endblock %}

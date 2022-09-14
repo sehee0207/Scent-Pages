@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+    body{
+        padding-top: 5.5em;
+    }
+    .add-comment {
+        display: block;
+        width: 100%;
+        height: calc(1.5em + 0.75rem + 2px);
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    }
+    .btn{
+        color: #FFF9F9;
+        background-color: #BAABDA;
+    }
+    .btn:hover{
+        color: #FFF9F9;
+    }
+    textarea{
+        outline: none;
+    }
+</style>
+<div class="container my-3">
+    <form method="post" class="post-form my-3">
+        {% csrf_token %}
+        {% include "form_errors.html" %}
+        <div class="form-group">
+            <label for="content">댓글</label>
+            <textarea class="add-comment" name="content" id="content" 
+                      rows="3">{{ form.content.value|default_if_none:'' }}</textarea>
+        </div>
+        <button type="submit" class="btn">저장하기</button>
+    </form>
+</div>
+{% endblock %}

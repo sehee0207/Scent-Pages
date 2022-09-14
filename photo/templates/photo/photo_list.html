@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block title %}
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .col-6{
+        padding-top: 3em;
+        display: flex;
+        flex-direction: column;
+    }
+    .row{
+        padding-top: 38px;
+        justify-content: center;
+    }
+    .text{
+        display: flex;
+        justify-content: center;
+    }
+    .text_m{
+        margin: 0;
+    }
+    .card-link{
+        color: #BAABDA;
+    }
+    .card-link:hover{
+        color: #7C3E66;
+    }
+</style>
+
+<div class='container'>
+    <div class="row">
+        <div class="col"></div>
+        <div class="col-6">
+            {% if object_list %}
+                {% for object in object_list %}
+                <div class="card" style="margin-bottom: 2em;">
+                    <img src="{{ object.image.url }}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <a href="{% url 'photo:like' object.id %}" class="float-left btn-like {% if user in object.like.all %} active {% endif %}"></a>
+                        {% if object.like.all.count %}
+                        <span class="float-left">
+                            {{object.like.all.count}}
+                        </span>
+                        {% endif %}
+                        <a href="{% url 'photo:bookmark' object.id %}" class="float-right btn-bookmark {% if user in object.bookmark.all %} active {% endif %}"></a>
+                        <br><br><br>
+                        <p class="card-title"> <strong>{{ object.author }}</strong></p>
+                        <p class="card-text">{{ object.text|linebreaks }}</p>
+                    </div>
+                    <div class="card-body">
+                        <a href="{% url 'photo:detail' object.id %}" class="card-link">댓글({{ object.comment_set.count }})</a>
+                        {% if user == object.author %}
+                        <a href="{% url 'photo:update' object.id %}" class="card-link">수정하기</a>
+                        <a href="{% url 'photo:delete' object.id %}" class="card-link">삭제하기</a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="text">
+                    <b><i>글이 없습니다.</i></b>
+                </div>
+            {% endif %}
+            
+            
+        </div>
+        <div class="col"></div>
+    </div>
+</div>
+{% endblock %}

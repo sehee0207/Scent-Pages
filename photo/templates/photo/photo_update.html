@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    .row{
+        padding-top: 5.5em;
+    }
+    
+    textarea{
+        color: black;
+        width: 100%;
+    }
+    .btn{
+        color: #FFF9F9;
+        background-color: #BAABDA;
+    }
+    .btn:hover{
+        color: #FFF9F9;
+    }
+</style>
+<div class="row">
+    <div class="col"></div>
+    <div class="col-12 col-xl-8 col-md-8">
+        <form action="" method="post">
+            {% csrf_token %}
+            {{form.as_p}}
+            <input type="submit" value="Update" class="btn">
+        </form>
+    </div>
+    <div class="col"></div>
+</div>
+
+{% endblock %}

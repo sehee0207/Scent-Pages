@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% block title %}
+{% endblock %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<style>
+    .row{
+        padding-top: 3em;
+        justify-content: center;
+    }
+    .ob_body{
+        padding: 2em;
+        padding-top: 0px;
+    }
+    .card-body{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 1.25em 0.5em;
+    }
+    .card img{
+        height: 200px;
+        object-fit:cover;
+    }
+    .profile{
+        margin: 10px;
+        width: 125px;
+        height: 125px;
+        background-image: url("/media/profile_pics/duck.jpg");
+        background-size:cover;
+        background-position:center;
+        border-radius: 50%;
+    }
+    .card{
+        background-color: #FFF9F9;
+            border: 0;
+            border-radius: 0;
+    }
+    .photo_scr{
+        padding: 10px;
+    }
+    .photo_img{
+        background-color: white;
+    }
+    #heart{
+        color: black;
+    }
+    .heart_count{
+        display: flex;
+        justify-content: flex-end;
+    }
+    .photo{
+        background-clip: border-box;
+        border: 1px solid rgba(0,0,0,.125);
+        border-radius: 0.25rem;
+        height: 30em;
+    }
+    
+</style>
+
+<div class="row">
+    <div class="col-md-12">
+        <div id="mdb-lightbox-ui"></div>
+        <div class="mdb-lightbox no-margin">
+            <div class="row">      
+                <div class="card" style="width: 30rem;">
+                  <div class="card-body">
+                        <a href="{% url 'accounts:profile' %}"><div class="profile" title="클릭하면 프로필 변경 페이지로 이동합니다"></div></a>
+                    <h5 class="card-title">{{ user }}</h5>
+                    <a href="{% url 'accounts:username_change' %}" style="color: #7C3E66;">ID 변경</a>
+                    <a href="{% url 'accounts:password_change' %}" style="color: #7C3E66;">비밀번호 변경</a>
+                  </div>
+                </div>            
+            </div>      
+            <div class="row">
+                {% for object in object_list %}
+                {% if object.author == request.user %}
+                <div class="ob_body">
+                    <figure class="ob_list">
+                        <div style="width : 19rem;" class="photo">
+                            <div class="photo_img card-body">
+                                <a href="{% url 'photo:detail' object.id %}" class="card-link"><img src="{{object.image.url}}" style="height: 18rem; object-fit: scale-down;"class="card-img-top" alt="..."></a>
+                            </div>
+                            <div class="photo_scr">
+                                <p class="card-text">{{ object.text|truncatechars:23}} </p>
+                                <p class="card-text">{{ object.created }}, {{ object.comment_set.count }}개의 댓글</p>
+                                <div class="heart_count">
+                                    <span id="heart" class="material-symbols-outlined">heart_plus</span>
+                                    <span class="float-left">
+                                        {{object.like.all.count}}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </figure>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col"></div>
+    </div>
+</div>
+
+{% endblock%}

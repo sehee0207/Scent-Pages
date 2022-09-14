@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- <title>{% block title %} {% endblock %}</title> -->
+    <title>Scent Pages</title>
+    <link rel="icon" href="perfume_cts_icon.ico'">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@1,300&family=Yuji+Boku&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik+Marker+Hatch&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+</head>
+    
+<body>
+    {% load static %}
+    <style>
+    body{
+        background-color: #FFF9F9;
+        font-family: 'Nanum Gothic', sans-serif;
+    }
+        
+    .btn-like{
+        width: 50px;
+        height: 50px;
+        background:url({% static 'images/favorite_FILL0.png' %});
+        background-repeat: no-repeat;
+    }
+    .btn-like.active{
+        width: 50px;
+        height: 50px;
+        background:url({% static 'images/favorite_FILL1.png' %});
+        background-repeat: no-repeat;
+    }
+     .btn-bookmark{
+        width: 50px;
+        height: 50px;
+        background:url({% static 'images/bookmark_FILL0.png' %});
+        background-repeat: no-repeat;
+    }
+    .btn-bookmark.active{
+        width: 50px;
+        height: 50px;
+        background:url({% static 'images/bookmark_FILL1.png' %});
+        background-repeat: no-repeat;
+    }
+    .btn-up{
+        width: 50px;
+        height: 50px;
+        background:url({% static 'images/up_FILL0.png' %});
+        background-repeat: no-repeat;
+    }
+    .btn-up.active{
+        width: 50px;
+        height: 50px;
+        background:url({% static 'images/up_FILL0.png' %});
+        background-repeat: no-repeat;
+    }
+    .btn-down{
+        width: 50px;
+        height: 50px;
+        background:url({% static 'images/down_FILL0.png' %});
+        background-repeat: no-repeat;
+    }
+    .btn-down.active{
+        width: 50px;
+        height: 50px;
+        background:url({% static 'images/down_FILL0.png' %});
+        background-repeat: no-repeat;
+    }
+    .navbar{
+        display: flex; 
+        justify-content: center;
+        margin-bottom: 2em;
+        top: 0;
+        left: 0;
+        right: 0;
+        position:fixed;
+        z-index: 25;
+        width: 100vw;
+    }
+        
+    .home{
+        display: flex; 
+        justify-content: center;
+         width: 600px;
+    }
+        
+    .menu{
+        display: flex; 
+        justify-content: center;
+        width: 600px;
+    }
+        
+    @import url('https://fonts.googleapis.com/css2?family=Rubik+Marker+Hatch&display=swap');
+    .navbar-brand{
+        font-family: 'Rubik Marker Hatch', cursive;
+        color: #FFF9F9;
+    }
+        
+    .navbar-brand:hover{
+        color: #FFF9F9;
+    }
+        
+    .navbar-nav{
+        padding-left: 50px;
+        align-items: center;
+    }
+        
+    .nav-item{
+        padding-left: 24px;
+    }
+        
+    .nav-link{
+        display: flex;
+    }
+        
+    nav{
+        position:sticky;
+    }
+        
+    .material-icons {
+        color: #FFF9F9;
+    }
+        
+    #search{
+        width: 300px;
+        display: flex;
+    }
+        
+    #search:focus{
+        outline: none;
+    }
+        
+    .button-info{
+        background-color: #BAABDA;
+    }
+        
+    input.focus{
+        outline: none;
+    }
+
+    </style>
+
+<nav class="navbar navbar-expand-lg navbar" style="background-color: #BAABDA;">
+    <div class="home">
+        <a class="navbar-brand" href="{% url 'photo:index' %}">Scent Pages</a>
+    </div>
+  
+    
+    <div class="search">
+        <form method="get" action="{% url 'photo:search' %}">
+            {% if search_term %}
+            <input class="form-control" type="text" id="search" placeholder="{{search_term}}" aria-label="Search" name="search_word" value="{{search_word}}">
+            {% else %}
+            <input class="form-control" type="text" id="search" placeholder="Search" aria-label="Search" name="search_word" value="{{search_word}}">
+            {% endif %}
+        </form>
+    </div>
+    
+    
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+    
+    <div class="menu">
+       <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                {% if user.is_authenticated %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'photo:create' %}"><span class="material-icons">add_circle</span><span class="sr-only">(current)</span></a>
+            </li>
+                
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'photo:like_list' %}"><span class="material-icons">favorite_border</span><span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'photo:bookmark_list' %}"><span class="material-icons">bookmark_border</span><span class="sr-only">(current)</span></a>
+            </li>
+                
+                <li class="nav-item">
+                <a class="nav-link" href="{% url 'accounts:logout' %}"><span class="material-icons">logout</span><span class="sr-only">(current)</span></a>
+              </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'photo:mylist' %}"><span class="material-icons">person</span><span class="sr-only">(current)</span></a>              
+                </li>
+               {% else %}
+                <li class="nav-item">
+                <a class="nav-link" href="{% url 'accounts:login' %}"><span class="material-icons">login</span><span class="sr-only">(current)</span></a>
+              </li>
+                {% endif %}
+            </ul>
+        </div> 
+    </div>
+</nav>
+    
+    <div class='container'>
+        {% if messages %}
+        <div class="row">
+            <div class="col"></div>
+            <div class="col-6">
+                {% for message in messages %}
+                <div class="alert alert-{{message.tag}}">{{message}}</div>
+                {% endfor %}
+            </div>
+            <div class="col"></div>
+        </div>
+    </div>
+        
+    {% endif %}
+    
+    {% block content %}
+    {% endblock %}
+    
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js" integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2" crossorigin="anonymous"></script>
+</body>
+</html>

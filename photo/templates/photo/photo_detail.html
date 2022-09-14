@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% block title %}
+{% endblock %}
+
+{% block content %}
+<style>
+    .col-7{
+        padding-top: 5.5em;   
+    }
+    .no_comment{
+        padding: 10px;
+    }
+    .comment{
+        padding: 10px;
+    }
+    .list-group{
+        border-radius: 0;
+    }
+    .list-group-item{
+        border: 0;
+    }
+    .card-link{
+        color: #BAABDA;
+    }
+    .card-link:hover{
+        color: #7C3E66;
+    }
+    b{
+        padding-left: 10px;
+    }
+    a{
+        color: #7C3E66;
+    }
+    a:hover{
+        color: #7C3E66;
+    }
+    #comment_padding{
+        padding-left: 10px;
+    }
+</style>
+<div class="row">
+        <div class="col"></div>
+        <div class="col-7">
+            <div class="card" style="margin-bottom: 2em">
+                <img src= "{{ object.image.url }}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <a href="{% url 'photo:up' object.id %}"
+                       class="float-left btn-up {% if user in object.up.all %} active {% endif %}"></a>
+                    {% if object.up.all.count %}
+                    <span class="float-left">
+                        {{object.up.all.count}}
+                    </span>
+                    {% endif %}
+                    <a href="{% url 'photo:down' object.id %}" class="float-right btn-down {% if user in object.down.all %} active {% endif %}"></a>
+                    {% if object.down.all.count %}
+                    <span class="float-right">
+                        {{object.down.all.count}}
+                    </span>
+                    {% endif %}
+                    <br><br><br>
+                    <p class="card-text"><strong>{{ object.author }}</strong></p>
+                    <p class="card-text">{{ object.text|linebreaks }}</p>
+                </div>
+                <ul class="list-group"> 
+                    <li class="list-group-item">생성일 : {{ object.created }}</li>
+                    {% if object.updated and object.updated != object.created %}
+                    <li class="list-group-item">수정일 : {{ object.updated }}</li>
+                    {% else %}
+                    <li class="list-group-item">-</li>
+                    {% endif %}
+
+                    <p class="card-text">
+                       {% if photo.comment_set.count > 0 %}
+                            <div>
+                            {% for comment in photo.comment_set.all %}  <!-- 등록한 댓글을 출력 -->
+                                <div class="comment py-2 text-muted">  <!-- 댓글 각각에 comment 스타일 지정 -->
+                                    <span><b>{{ comment.author }}</b></span>
+                                    <span style="white-space: pre-line;" id="comment_padding">{{ comment.content }}</span>
+                                    <span id="comment_each">
+                                        {% if comment.modify_date %}
+                                        (수정: {{ comment.modify_date }})
+                                        {% else %}
+                                        ({{ comment.create_date }})
+                                        {% endif %}
+                                    </span>
+                                    {% if request.user == comment.author %}
+                                    <a href="{% url 'photo:comment_modify' comment.id  %}" class="small">수정</a>,
+                                    <a href="{% url 'photo:comment_delete' comment.id  %}" class="small delete" 
+                                       data-uri="{% url 'photo:comment_delete' comment.id  %}">삭제</a>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                            </div>
+                        {% else %}
+                        <div class="no_comment">
+                            <p class="card-text">
+                            <b>댓글이 없습니다.</b>
+                            </p>
+                        </div>
+                        {% endif %}
+                            <div>
+                </div>
+                </ul>
+                <div class="card-body">
+                    {% if user == object.author %}
+                    <a href="{% url 'photo:update' object.id %}" class="card-link">수정하기</a>
+                    <a href="{% url 'photo:delete' object.id %}" class="card-link">삭제하기</a>
+                    {% endif %}
+                    <a href="{% url 'photo:comment_create' object.id %}" class="card-link">댓글달기</a>
+                </div>
+            </div>
+        </div>
+    <div class="col"></div>
+</div>
+
+{% endblock %}

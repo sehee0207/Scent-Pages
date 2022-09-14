@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+    body{
+        padding-top: 5.5em;
+    }
+    .btn{
+        color: #FFF9F9;
+        background-color: #BAABDA;
+    }
+    .btn:hover{
+        color: #FFF9F9;
+    }
+    .alert{
+        color: #FFF9F9;
+        background-color: #BAABDA;
+    }
+</style>
+
+<div class="alert" rol="alert">
+    진짜로 {{object}} 를 지울건가요?
+</div>
+<form action="" method="post">
+    {% csrf_token %}
+    <input type="submit" value="Delete" class="btn">
+</form>
+{% endblock %}
